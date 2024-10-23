@@ -21,6 +21,27 @@ Repository purpose is to keep all programs, articles, tools and informations use
     1. Measures of information dynamics: how information is processed in complex systems, including measures of information storage and transfer;
     2. Empirical data analysis using the JIDT open-source software - http://github.com/jlizier/jidt (which is java version of what i use)
 
+## How this algorithm works
+1. Consider a simple network where nodes represent stochastic processes, and arrows indicate interactions between them.
+
+2. Let Y be the current target of interest. The nodes highlighted in blue represent the relevant sources Z={X1,X3,X4} i.e., the processes contributing to the current value of Yn​.
+
+3. To estimate the mTE for target Y, the relevant sources Z must first be inferred. Once identified, mTE from a single process (e.g., X3) to Y can be computed as conditional transfer entropy, accounting for the influence of other relevant sources in Z.
+
+4.The algorithm repeats this mTE estimation process for each source-target pair in the network, treating each node iteratively as the target and inferring its relevant sources.
+
+5. Results:
+   The algorithm typically returns a matrix of results. In the context of multivariate transfer entropy (mTE) estimation, this matrix represents the information transfer between each pair of source and target processes within the network.
+
+- The rows of the matrix correspond to the target processes.
+- The columns represent the source processes.
+- Each entry in the matrix contains the mTE value (the amount of information transfer) from a particular source process to a specific target process.
+
+This matrix shows how much information each source contributes to the prediction of each target process, providing a comprehensive view of the information flow across the network. The matrix can also be accompanied by p-values or statistical significance tests to indicate whether each mTE value is significant.
+
+
+
+
 ## Other research that uses this toolkit
 
  - [Brain Connectivity Analysis for EEG-Based Face Perception Task](https://app.dimensions.ai/details/publication/pub.1169254368)
@@ -30,7 +51,7 @@ Repository purpose is to keep all programs, articles, tools and informations use
 
 
 
-## Key Terminology: 
+## Key knowledge: 
 * `Multivariate Transfer Entropy` - Multivariate Transfer Entropy (MTE) is a measure of directional information flow between multiple variables in a dynamic system, extending the classical Transfer Entropy (TE) to account for multivariate interactions. Unlike pairwise TE, MTE quantifies the amount of information transferred from one or more source variables to one or more target variables, while conditioning on the state of other variables in the system, thereby capturing more complex dependencies and interactions.
 * 'mTE Value': The estimated amount of information that the past of a given source XiXi​ provides about the future state of the target YnYn​, conditioned on both the past of the target and the other relevant sources in the set ZZ. This value quantifies how much knowledge of the source helps predict the target's next state, beyond the target's own history.
 * `Difference between replications in mTe and Multiscale` - 
