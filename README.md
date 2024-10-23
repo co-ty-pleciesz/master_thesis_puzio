@@ -22,6 +22,19 @@ Repository purpose is to keep all programs, articles, tools and informations use
     2. Empirical data analysis using the JIDT open-source software - http://github.com/jlizier/jidt (which is java version of what i use)
 
 ## How this algorithm works
+
+The multivariate Transfer Entropy (mTE) calculation begins by measuring how much past information from a source process (X) reduces uncertainty about the current state of a target process (Y), while accounting for Y's own past. Instead of considering all possible variables from the sources (which would be computationally expensive), a greedy algorithm is used to iteratively build a smaller set of relevant sources (denoted as Z) that contribute significant information.
+
+Here's a summary of the process (gready algorithm):
+
+    - Initialization: The algorithm starts with an empty set (Z) and candidate variables from both the target's past (CY) and the sources' past (CX).
+    - Selecting from the target's past (CY): The algorithm tests each candidate variable to find the one that provides the most information about Y, conditioned on previously selected variables. If a variable passes a significance test, it's added to Z.
+    - Selecting from the sources' past (CX): The same process is applied to the sources' past, iteratively adding significant variables to Z.
+    - Pruning: The algorithm checks if any variables in Z have become redundant and removes them if they no longer provide significant information.
+    - Final testing: An omnibus test ensures that the selected variables collectively transfer significant information to the target. If successful, the mTE from each source to the target is calculated.
+
+So we've got:
+
 1. Consider a simple network where nodes represent stochastic processes, and arrows indicate interactions between them.
 ![obraz](https://github.com/user-attachments/assets/c6c50db3-6f2e-4ca7-a540-ed2d1839e503)
 
