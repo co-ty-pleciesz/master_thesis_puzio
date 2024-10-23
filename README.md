@@ -37,9 +37,9 @@ Repository purpose is to keep all programs, articles, tools and informations use
 - The columns represent the source processes.
 - Each entry in the matrix contains the mTE value (the amount of information transfer) from a particular source process to a specific target process.
 
-This matrix shows how much information each source contributes to the prediction of each target process, providing a comprehensive view of the information flow across the network. The matrix can also be accompanied by p-values or statistical significance tests to indicate whether each mTE value is significant.
-
-
+  This matrix shows how much information each source contributes to the prediction of each target process, providing a comprehensive view of the information flow across the network. The matrix can also be accompanied by p-values or statistical significance tests to indicate whether each mTE value is significant.
+ 
+ 
 
 
 ## Other research that uses this toolkit
