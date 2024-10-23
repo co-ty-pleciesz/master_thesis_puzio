@@ -10,6 +10,7 @@ Repository purpose is to keep all programs, articles, tools and informations use
 ## Toolkit that I use
 
  - [The Information Dynamics Toolkit xl (IDTxl)](https://github.com/pwollstadt/IDTxl)
+    P. Wollstadt, J. T. Lizier, R. Vicente, C. Finn, M. Martinez-Zarzuela, P. Mediano, L. Novelli, M. Wibral (2018). IDTxl: The Information Dynamics Toolkit xl: a Python package for the efficient  analysis of multivariate information dynamics in networks. Journal of Open Source Software, 4(34), 1081. https://doi.org/10.21105/joss.01081.
 
 ## Theoritical background
 
