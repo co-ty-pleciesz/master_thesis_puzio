@@ -1,4 +1,4 @@
-# Investigating brain information transfer during intention decoding using multivariate transfer entropy
+# Investigation of Brain Information Transfer in Intention Decoding Using Multivariate Transfer Entropy
 
 Repository purpose is to keep all programs, articles, tools and informations used to write my master thesis.
 
