@@ -24,6 +24,7 @@ Repository purpose is to keep all programs, articles, tools and informations use
 ## How this algorithm works
 
 The multivariate Transfer Entropy (mTE) calculation begins by measuring how much past information from a source process (X) reduces uncertainty about the current state of a target process (Y), while accounting for Y's own past. Instead of considering all possible variables from the sources (which would be computationally expensive), a greedy algorithm is used to iteratively build a smaller set of relevant sources (denoted as Z) that contribute significant information.
+
 ![obraz](https://github.com/user-attachments/assets/b4fba16f-703e-447e-9a8d-1f59757519a2)
 
 Here's a summary of the process (gready algorithm):
