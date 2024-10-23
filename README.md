@@ -32,3 +32,10 @@ Repository purpose is to keep all programs, articles, tools and informations use
 
 ## Key Terminology: 
 * `Multivariate Transfer Entropy` - Multivariate Transfer Entropy (MTE) is a measure of directional information flow between multiple variables in a dynamic system, extending the classical Transfer Entropy (TE) to account for multivariate interactions. Unlike pairwise TE, MTE quantifies the amount of information transferred from one or more source variables to one or more target variables, while conditioning on the state of other variables in the system, thereby capturing more complex dependencies and interactions.
+* `Difference between replications in mTe and Multiscale` - 
+In mTE multiple replications of a single sample can be collected (a replication is intended as a physical or temporal copy of the process, or a single experimental trial);
+Samples can be collected both over time and over replications to form an ensemble of time series, which is treated as a 3D structure
+In contrast, multiscale analysis looks at the same data across different scales, such as various time resolutions, to capture patterns or behaviors that emerge at different levels of detail. Multiscale analysis is about zooming in or out on the temporal or spatial aspects of a single dataset, while the ensemble of time series represents data collected from multiple replications of the same process.
+
+So, while ensemble of time series focuses on variability across different realizations, multiscale focuses on examining patterns within a single realization across multiple scales. Both methods offer insights into different dimensions of the data but from distinct perspectives.
+* 
