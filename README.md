@@ -23,10 +23,12 @@ Repository purpose is to keep all programs, articles, tools and informations use
 
 ## How this algorithm works
 1. Consider a simple network where nodes represent stochastic processes, and arrows indicate interactions between them.
+![obraz](https://github.com/user-attachments/assets/c6c50db3-6f2e-4ca7-a540-ed2d1839e503)
 
 2. Let Y be the current target of interest. The nodes highlighted in blue represent the relevant sources Z={X1,X3,X4} i.e., the processes contributing to the current value of Yn​.
 
 3. To estimate the mTE for target Y, the relevant sources Z must first be inferred. Once identified, mTE from a single process (e.g., X3) to Y can be computed as conditional transfer entropy, accounting for the influence of other relevant sources in Z.
+![obraz](https://github.com/user-attachments/assets/cd37f0d0-bf4a-46ae-89a5-b3a006422fc8)
 
 4. The algorithm repeats this mTE estimation process for each source-target pair in the network, treating each node iteratively as the target and inferring its relevant sources.
 
