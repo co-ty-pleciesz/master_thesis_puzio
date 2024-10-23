@@ -28,7 +28,7 @@ Repository purpose is to keep all programs, articles, tools and informations use
 
 3. To estimate the mTE for target Y, the relevant sources Z must first be inferred. Once identified, mTE from a single process (e.g., X3) to Y can be computed as conditional transfer entropy, accounting for the influence of other relevant sources in Z.
 
-4.The algorithm repeats this mTE estimation process for each source-target pair in the network, treating each node iteratively as the target and inferring its relevant sources.
+4. The algorithm repeats this mTE estimation process for each source-target pair in the network, treating each node iteratively as the target and inferring its relevant sources.
 
 5. Results:
    The algorithm typically returns a matrix of results. In the context of multivariate transfer entropy (mTE) estimation, this matrix represents the information transfer between each pair of source and target processes within the network.
