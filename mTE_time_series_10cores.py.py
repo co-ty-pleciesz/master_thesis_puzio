@@ -20,7 +20,6 @@ def worker(num):
     '''Funckcja wykonujaca caly program'''
 
     device = torch.device("cpu")
-    print("GPU not available. Using CPU for computation.")
 
     # Set the device for IDTxl
     network_analysis = MultivariateTE()
