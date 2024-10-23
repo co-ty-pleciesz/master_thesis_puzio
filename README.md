@@ -37,5 +37,5 @@ In mTE multiple replications of a single sample can be collected (a replication 
 Samples can be collected both over time and over replications to form an ensemble of time series, which is treated as a 3D structure
 In contrast, multiscale analysis looks at the same data across different scales, such as various time resolutions, to capture patterns or behaviors that emerge at different levels of detail. Multiscale analysis is about zooming in or out on the temporal or spatial aspects of a single dataset, while the ensemble of time series represents data collected from multiple replications of the same process.
 
-So, while ensemble of time series focuses on variability across different realizations, multiscale focuses on examining patterns within a single realization across multiple scales. Both methods offer insights into different dimensions of the data but from distinct perspectives.
+ So, while ensemble of time series focuses on variability across different realizations, multiscale focuses on examining patterns within a single realization across multiple scales. Both methods offer insights into different dimensions of the data but from distinct perspectives.
 * 
