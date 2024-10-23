@@ -15,7 +15,8 @@ Repository purpose is to keep all programs, articles, tools and informations use
 
  - [Theoretical Introduction to IDTxl toolkit ](https://github.com/pwollstadt/IDTxl/wiki/Theoretical-Introduction)
  - [Information theory - Joseph Lazier lecture on youtube](https://youtube.com/playlist?list=PLOfPLLxr5gsVLSlmzcMnsFANb-uWkArby&si=CmDHGDc9H7kVCQrs)
-    This playlist presents video lectures from a course on using information theory for analysing complex systems, with particular focuses on:
+
+   This playlist presents video lectures from a course on using information theory for analysing complex systems, with particular focuses on:
     1. Measures of information dynamics: how information is processed in complex systems, including measures of information storage and transfer;
     2. Empirical data analysis using the JIDT open-source software - http://github.com/jlizier/jidt (which is java version of what i use)
 
