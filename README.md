@@ -34,9 +34,8 @@ Here's a summary of the process (gready algorithm):
 * Final testing: An omnibus test ensures that the selected variables collectively transfer significant information to the target. If successful, the mTE from each source to the target is calculated.
 
 Now we've got:
-
-1. Network where nodes represent stochastic processes, and arrows indicate interactions between them.
 ![obraz](https://github.com/user-attachments/assets/c6c50db3-6f2e-4ca7-a540-ed2d1839e503)
+1. Network where nodes represent stochastic processes, and arrows indicate interactions between them.
 
 2. Let Y be the current target of interest. The nodes highlighted in blue represent the relevant sources Z={X1,X3,X4} i.e., the processes contributing to the current value of Yn​.
 
