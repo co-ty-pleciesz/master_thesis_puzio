@@ -8,10 +8,12 @@ import hashlib
 import matplotlib.pyplot as plt
 import pprint
 import copy
+import time
+import torch
 
 from mne import io
 from idtxl.visualise_graph import plot_network
-
+from idtxl.multivariate_te import MultivariateTE 
 
 def setCwdHere():
     """Sets cwd to dir in which this script is located"""
@@ -96,6 +98,80 @@ def adjustSignalToIDTxl(eegSignal, containesEpochedData=0, epochIndices=None):
         # load data (https://pwollstadt.github.io/IDTxl/html/idtxl_data_class.html)
 
     return data
+
+def worker(data_chunk, log_file, log_lock, start_time):
+    '''Funkcja wykonująca cały program'''
+
+    device = torch.device("cpu")
+    print("GPU not available. Using CPU for computation.")
+
+    # Set the device for IDTxl
+    network_analysis = MultivariateTE()
+    network_analysis.set_device(device)
+
+    # Redirect stdout to log file with lock
+    with log_lock:
+        sys.stdout = open(log_file, "a")
+
+    # Reszta kodu...
+    samplingRate = 1000
+    samplesPerMs = samplingRate / 1000
+
+    # Przystosuj fragment danych do IDTxl
+    data_adjusted = adjustSignalToIDTxl(data_chunk, containesEpochedData=True)
+
+    # setup TE analysis
+    minLagInMs = 1
+    maxLagInMs = 50
+
+    settings = {
+        'cmi_estimator': 'JidtGaussianCMI',
+        'n_perm_max_stat': 100,
+        'n_perm_min_stat': 100,
+        'n_perm_omnibus': 100,
+        'n_perm_max_seq': 100,
+        'max_lag_sources': int(maxLagInMs * samplesPerMs),
+        'min_lag_sources': int(minLagInMs * samplesPerMs),
+        "alpha_min_stat": 0.05,
+        "alpha_max_stat": 0.05,
+        "alpha_omnibus": 0.05,
+        "alpha_max_seq": 0.05,
+    }
+
+    # Moving multivariate TE analysis
+    moving_te_settings = {
+        "timeRange": [0, data_adjusted.data.shape[1] - 1],
+        "pastSpan": 100,
+        "step": 50,
+        "targets": [2],
+        "sources": [1],
+        "cmi_estimator": "JidtGaussianCMI",
+        "fdr_correction": True,
+    }
+
+    # Run moving TE analysis
+    resultList, aux = computeMovingMultivariateTransferEntropy(data_adjusted, moving_te_settings)
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    with log_lock:
+        print(f"Proces {num}: Czas wykonania programu(bez wyświetlenia matrixa): {execution_time} sekund")
+
+    # Create TE matrix for the last window
+    num_targets = len(moving_te_settings["targets"])
+    num_sources = len(moving_te_settings["sources"])
+    te_matrix = np.zeros((num_sources, num_targets))
+    last_result = resultList[-1]
+
+    for target in moving_te_settings["targets"]:
+        plotSingleTargetMteTimeSeries(resultList, target)
+
+    for target in moving_te_settings["targets"]:
+        mTE_vs_source_time = createSourceTargetMteDict(resultList, aux, target=target)
+        for source in moving_te_settings["sources"]:
+            plotSigleSourceTargetMteTimeSeries(
+                mTE_vs_source_time, source=source, targetLabel=str(target)
+            )
 
 
 def computeLogisticCoupledProcesses(
@@ -340,6 +416,113 @@ def computeMovingMultivariateTransferEntropy(data, settings):
 
     return resultList, aux
 
+def computeMovingBivariateTransferEntropy(data, settings):
+    """..."""
+    # settings = {
+    # "timeRange": [
+    #     0,
+    #     2000,
+    # ],  # starting and ending sample index, or 'all' i.e. take whole time range of the signal
+    # "pastSpan": 50,  # number of samples to look into the past or 'all' which always takes maximal number of samples in the past available
+    # "step": 1,  # number of samples to progress the calculation window
+    # "targets": [0, 4],  # list of targets
+    # "sources": range(0, 64),  # list of sources
+    # "cmi_estimator": "JidtGaussianCMI",  # see idtxl.network_analysis.analyse_network
+    # "fdr_correction": True,  # see idtxl.network_analysis.analyse_network
+
+    from idtxl.multivariate_te import MultivariateTE
+    from idtxl.bivariate_te import BivariateTE
+
+    network_analysis = BivariateTE()
+
+    timeRange = settings["timeRange"]
+    span = settings["pastSpan"]
+    step = settings["step"]
+    targets = settings["targets"]
+    sources = settings["sources"]
+    cmi_estimator = settings["cmi_estimator"]
+    fdr_correction = settings["fdr_correction"]
+
+    N = timeRange[1] - timeRange[0] + 1
+    assert step > 0 and isinstance(step, int), "step should be > 0 and integer"
+    # TODO lacking assertion for span
+
+    listOfSampleRanges = []
+    if span == "all":
+        a = 0
+        # windows extraction
+        for b in range(N - 1, 0, -step):
+            listOfSampleRanges.append((a, b))
+
+    else:
+        # windows extraction
+        b = N - 1
+        a = b - span + 1
+        while b >= 0 and b > a:
+            listOfSampleRanges.append((a, b))
+            b -= step
+            a = b - span + 1
+            if a < 0:
+                a = 0
+
+    resultList = []
+    # adding custom fields
+    aux = {}
+    aux["windows_first_sample"] = []
+    aux["windows_last_sample"] = []
+
+    for samplesRange in listOfSampleRanges:
+        dataFragment = copy.deepcopy(data)  # memory optimization needed here
+        dataFragment.set_data(
+            dataFragment.data[:, samplesRange[0] : samplesRange[1] + 1, :],
+            dim_order="psr",
+        )
+
+        # DEBUG
+        # print(samplesRange)
+        # visualizeInputData(data=dataFragment, scatter=1)
+
+        maxLag = samplesRange[1] - samplesRange[0] - 1
+        if maxLag == 0:
+            break
+
+        aux["windows_first_sample"].append(samplesRange[0])
+        aux["windows_last_sample"].append(samplesRange[1])
+        # one can extent aux if needed
+
+        print(f"DEBUG: range={samplesRange}")
+        settings = {
+            "cmi_estimator": cmi_estimator,
+            "max_lag_sources": maxLag,
+            "min_lag_sources": 1,
+            "fdr_correction": fdr_correction,
+                'cmi_estimator': 'JidtGaussianCMI',
+            'n_perm_max_stat': 100,  #added by me
+            'n_perm_min_stat': 100,
+            'n_perm_omnibus': 100,
+            'n_perm_max_seq': 100,
+            "alpha_min_stat": 0.05,
+            "alpha_mi": 0.05,
+            "alpha": 0.05,
+            "alpha_max_stat": 0.05, 
+            "alpha_omnibus": 0.05,
+            "alpha_max_seq": 0.05, #to here
+        }
+
+        result = network_analysis.analyse_network(
+            settings=settings,
+            data=dataFragment,
+            targets=targets,
+            sources=sources,
+        )
+
+        # aggregation of specific result
+        # save network snapshot to see the evolution
+        resultList.append(result)
+
+    resultList.reverse()  # because we collected windows from the rightmost window
+
+    return resultList, aux
 
 def getRelevantSourceInformation(result, target):
     """..."""
