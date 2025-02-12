@@ -3,7 +3,7 @@
 Repository purpose is to keep all programs, articles, tools and informations used to write my master thesis.
 
 
-# Opis plików
+## Opis plików
 
 * run_bivariate_te.py - Główny plik wykonywalny. Uruchamia analizę Bivariate Transfer Entropy (TE) dla 5 targetów i 5 source. Proces jest opisany krok po kroku w kodzie.
 
