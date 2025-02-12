@@ -79,7 +79,7 @@ print(f"Znaleziono {len(epoch_list)} epok EEG.", flush=True)
 # plt.show()
 
 #####################
-
+#Aktualne ustawienia służą temu, żeby coś wyświetlać i żeby dość szybko się liczyło
 
 settings = {
     'cmi_estimator': 'JidtGaussianCMI',
@@ -130,6 +130,7 @@ for i, epoch in enumerate(epoch_list):
 for i, results in enumerate(results_list):
     print(f"\n Epoka {i+1}", flush=True)
     results.print_edge_list(weights='max_te_lag', fdr=False)
+
 
 #  Uśrednione TE dla wszystkich epok
 all_te_matrices = np.array([r.get_adjacency_matrix(weights='max_te_lag') for r in results_list])
