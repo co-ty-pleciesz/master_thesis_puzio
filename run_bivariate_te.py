@@ -1,21 +1,16 @@
-
-import os, sys
-import matplotlib.pyplot as plt
-from mne import make_fixed_length_epochs
-from toolkit2 import *
-import torch
-import time
-import mne
+import sys
 import numpy as np
-
+import matplotlib.pyplot as plt
+import mne
 from scipy.stats import zscore
 from idtxl.data import Data
 from idtxl.bivariate_te import BivariateTE   
-from idtxl.visualise_graph import plot_network      
+from idtxl.visualise_graph import plot_network
+
+from toolkit2 import setCwdHere, loadIDTxl, loadRawEEG, plotSingleTargetMteTimeSeries  
 
 setCwdHere()
 loadIDTxl()
-
 
 network_analysis = BivariateTE()
 
@@ -36,6 +31,7 @@ eeg = loadRawEEG(srcDir, subCode, cond)
 events, event_id = mne.events_from_annotations(eeg)
 
 # Filtrujemy tylko te eventy, które zawierają "Response/P" lub "Response/M" 
+# Marker P- rozpoczęcie oglądania obrazu, M-zakończenie
 p_codes = [code for key, code in event_id.items() if key.startswith("Response/P")] 
 m_codes = [code for key, code in event_id.items() if key.startswith("Response/M")]
 
@@ -49,24 +45,24 @@ m_events = events[np.isin(events[:, 2], m_codes)][:, 0]
 print("Markery P (początek):", p_events, flush=True)
 print("Markery M (koniec):", m_events, flush=True)
 
-# Dopasowanie markerów P → M
 epoch_list = []
-fs = eeg.info["sfreq"]  # Częstotliwość próbkowania
+fs = eeg.info["sfreq"]
 
+# Wycinamy EEG od `P` do `M`
 for p_time in p_events:
-    # Znajdź pierwsze `M`, które pojawia się po `P`
+    
     m_time = m_events[m_events > p_time]
     if len(m_time) == 0:
-        continue  # Jeśli nie ma końcowego `M`, pomijamy
+        continue  
 
-    m_time = m_time[0]  # Najbliższy marker `M`
-
-    # Wycinamy EEG od `P` do `M`
+    m_time = m_time[0]  
+    # Dodanie to listy epok osobnych obrazów
     epoch = eeg.copy().crop(tmin=p_time / fs, tmax=m_time / fs)
     epoch_list.append(epoch)
 
 print(f"Znaleziono {len(epoch_list)} epok EEG.", flush=True)
 #####################################################
+#Podejrzenie wyglądu sygnału
 
 # first_epoch = epoch_list[0].get_data()
 # channel_idx = 0 
@@ -109,6 +105,8 @@ for i, epoch in enumerate(epoch_list):
     print(f" Analizuję epokę {i+1}/{len(epoch_list)}", flush=True)
 
     data_array = epoch.get_data() * 1e6  # Przeskalowanie do µV
+    
+    #NORMALIZACJA DANYCH
     data = Data(data_array, dim_order='ps', normalise=True, seed=1)
 
     # Uruchomienie analizy Bivariate TE
@@ -117,7 +115,7 @@ for i, epoch in enumerate(epoch_list):
         results = network_analysis.analyse_network(
             settings=settings,
             data=data,
-            sources=[3],#4, 5, 42, 43],
+            sources=[3, 4, 5, 42, 43],
             targets=[28, 30, 23, 25, 24]
         )
         print(f" Analiza TE zakończona dla epoki {i+1}", flush=True)
