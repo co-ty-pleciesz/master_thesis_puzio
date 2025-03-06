@@ -2,7 +2,7 @@
 import numpy as np
 from . import idtxl_utils as utils
 
-VERBOSE = False
+VERBOSE = True
 
 
 class Data:

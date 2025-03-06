@@ -38,7 +38,7 @@ network_analysis = BivariateTE()
 # new_num = highest_num + 1
 
 # Open the new log file for writing
-sys.stdout = open(f"logs_bi_22.txt", "w")
+sys.stdout = open(f"logs_bivariate_222.txt", "w")
 
 
 # Rest of the code...
@@ -49,6 +49,7 @@ samplingRate = 1000 # ?    potestowac
 samplesPerMs = samplingRate / 1000
 eeg = loadRawEEG_epochs(srcDir, subCode, cond)
 
+#zmiana 9.01 odkomentowuje blok
 # epochLengthMs = 0
 # # optionally narrow down epoch selection (for faster testing)
 # # epochIndicesList = range(100, 111)
@@ -86,12 +87,12 @@ settings = {
 # Moving multivariate TE analysis
 moving_te_settings = {
     "timeRange": [0, data.data.shape[1] - 1],
-    "pastSpan": 100,#50,  #0 lub all, ale wszystkie; number of samples to look into the past
-    "step": 50,  #1,  50 - 100
-    "targets": [2], #,],   czy dobrze robie i oba sa target i source?     #ustaw tu for ze jedna liczba jest targetem, a reszta sourcem i potem daleej w forze, ze kolejny targetem jest kolejnym i reszta sorcem
+    "pastSpan": 1000,#50,  #0 lub all, ale wszystkie; number of samples to look into the past
+    "step": 1000,  #1,  50 - 100
+    "targets": [63], #,],   czy dobrze robie i oba sa target i source?     #ustaw tu for ze jedna liczba jest targetem, a reszta sourcem i potem daleej w forze, ze kolejny targetem jest kolejnym i reszta sorcem
     #funkcja set do tego 
 #ile czasu 
-    "sources": [1,3,4,5,6,7,12,13,14,15,16,23,24,25,26,27,29,31],  # list of sources
+    "sources": [29,30,31,24,25,26,61,62],  # list of sources
     "cmi_estimator": "JidtGaussianCMI", #box-kernel - biased, kraskov- slower, best
     "fdr_correction": True,
 }

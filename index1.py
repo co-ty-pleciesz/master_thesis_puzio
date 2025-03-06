@@ -43,7 +43,7 @@ eeg = loadRawEEG(srcDir, subCode, cond)
 
 eeg.crop(tmin=11546 / samplingRate, tmax=22771 / samplingRate)
 
-epochLengthMs = 0
+epochLengthMs = 1000
 # optionally narrow down epoch selection (for faster testing)
 epochIndicesList = range(100, 111)
 if epochLengthMs > 0:

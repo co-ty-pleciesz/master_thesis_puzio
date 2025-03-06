@@ -479,8 +479,9 @@ def computeMovingBivariateTransferEntropy(data, settings):
         )
 
         # DEBUG
-        # print(samplesRange)
-        # visualizeInputData(data=dataFragment, scatter=1)
+        #print(samplesRange)
+        
+        #visualizeInputData(data=dataFragment, scatter=1)
 
         maxLag = samplesRange[1] - samplesRange[0] - 1
         if maxLag == 0:

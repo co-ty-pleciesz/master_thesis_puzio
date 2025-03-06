@@ -105,6 +105,8 @@ class NetworkInference(NetworkAnalysis):
                 True if a candidate with significant MI was found
         """
         success = False
+        self.settings["verbose"] = True
+
         if self.settings["verbose"]:
             print(f"candidate set: {self._idx_to_lag(candidate_set)}")
         while candidate_set:
@@ -123,6 +125,8 @@ class NetworkInference(NetworkAnalysis):
                     var2=self._current_value_realisations,
                     conditional=self._selected_vars_realisations,
                 )
+                #for candidate, te_value in zip(candidate_set, temp_te):
+                #    print(f"Candidate {candidate}: TE = {te_value}")
             except ex.AlgorithmExhaustedError as aee:
                 # The algorithm cannot continue here, so
                 #  we'll terminate the search for more candidates,
@@ -137,6 +141,7 @@ class NetworkInference(NetworkAnalysis):
 
             # Test max CMI for significance with maximum statistics.
             te_max_candidate = max(temp_te)
+            print(f"te_max_candidate is {te_max_candidate}") #nadpisane
             max_candidate = candidate_set[np.argmax(temp_te)]
             if self.settings["verbose"]:
                 print(
@@ -181,7 +186,7 @@ class NetworkInference(NetworkAnalysis):
                     self._write_checkpoint()
             else:
                 if self.settings["verbose"]:
-                    print(" -- not significant")
+                    print(" -- not significant2")
                 break
         return success
 
@@ -632,6 +637,7 @@ class NetworkInferenceBivariate(NetworkInference):
 
                 # Test max CMI for significance with maximum statistics.
                 te_max_candidate = max(temp_te)
+                print(f"te_max_candidate is {te_max_candidate}") #nadp
                 max_candidate = candidate_set[np.argmax(temp_te)]
                 if self.settings["verbose"]:
                     print(
@@ -685,7 +691,7 @@ class NetworkInferenceBivariate(NetworkInference):
                         self._write_checkpoint()
                 else:
                     if self.settings["verbose"]:
-                        print(" -- not significant")
+                        print(" -- not significant12")
                     break
         return success
 

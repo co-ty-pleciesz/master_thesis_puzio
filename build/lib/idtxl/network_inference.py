@@ -181,7 +181,7 @@ class NetworkInference(NetworkAnalysis):
                     self._write_checkpoint()
             else:
                 if self.settings["verbose"]:
-                    print(" -- not significant"+te_max_candidate) 
+                    print(" -- not significant3"+te_max_candidate) 
                 break
         return success
 
@@ -685,7 +685,7 @@ class NetworkInferenceBivariate(NetworkInference):
                         self._write_checkpoint()
                 else:
                     if self.settings["verbose"]:
-                        print(" -- not significant"+te_max_candidate) 
+                        print(" -- not significant4"+te_max_candidate) 
                     break
         return success
 
@@ -1102,8 +1102,8 @@ class NetworkInferenceMultivariate(NetworkInference):
             # candidate. If the minimum is significant, break, all other
             # sources will be significant as well (b/c they have higher TE).
             if not significant:
-                # if self.settings['verbose']:
-                #     print(' -- not significant\n')
+                if self.settings['verbose']:
+                   print(' -- not significant5\n')
                 self._remove_selected_var(min_candidate)
                 if len(self.selected_vars_sources) == 0:
                     print("No remaining candidates after pruning.")

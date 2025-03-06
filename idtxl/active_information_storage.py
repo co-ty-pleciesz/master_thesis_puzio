@@ -447,7 +447,7 @@ class ActiveInformationStorage(SingleProcessAnalysis):
                     self._write_checkpoint()
             else:
                 if self.settings["verbose"]:
-                    print(" -- not significant")
+                    print(" -- not significant6")
                 break
         return success
 

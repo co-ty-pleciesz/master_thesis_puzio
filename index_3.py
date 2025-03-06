@@ -1,7 +1,7 @@
 import os, sys
 import matplotlib.pyplot as plt
 from mne import make_fixed_length_epochs
-from toolkit import *
+from toolkit2 import *
 import torch
 import time
 import glob

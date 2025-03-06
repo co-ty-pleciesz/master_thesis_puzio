@@ -400,7 +400,7 @@ def omnibus_test(analysis_setup, data):
         if significance:
             print(" -- significant\n")
         else:
-            print(" -- not significant\n"+pvalue)
+            print(" -- not significant omni\n"+pvalue)
     return significance, pvalue, statistic
 
 
@@ -447,9 +447,9 @@ def max_statistic(analysis_setup, data, candidate_set, te_max_candidate, conditi
             made
     """
     # Set defaults and get parameters from settings dictionary
-    analysis_setup.settings.setdefault("n_perm_max_stat", 200)
+    analysis_setup.settings.setdefault("n_perm_max_stat", 50)
     n_perm = analysis_setup.settings["n_perm_max_stat"]
-    analysis_setup.settings.setdefault("alpha_max_stat", 0.05)
+    analysis_setup.settings.setdefault("alpha_max_stat", 0.1)
     alpha = analysis_setup.settings["alpha_max_stat"]
     _check_permute_in_time(analysis_setup, data, n_perm)
     assert candidate_set, "The candidate set is empty."

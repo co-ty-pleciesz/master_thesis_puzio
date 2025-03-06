@@ -68,6 +68,11 @@ class BivariateTE(NetworkInferenceTE, NetworkInferenceBivariate):
 
     def __init__(self):
         super().__init__()
+    
+    def set_device(self, device):
+        """Set the device for computation."""
+        self.device = device
+        print("Using GPU for computation.")
 
     def analyse_network(self, settings, data, targets="all", sources="all"):
         """Find bivariate transfer entropy between all nodes in the network.
